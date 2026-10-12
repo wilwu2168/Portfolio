@@ -1,0 +1,143 @@
+:root {
+  --mc: 'Jersey 10', 'Pixelify Sans', monospace;
+  --px: 'Press Start 2P', monospace;
+}
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; margin: 0; }
+body {
+  background: #000;
+  color: #fff;
+  font-family: var(--mc);
+  font-size: 24px;
+  overflow: hidden;
+  -webkit-font-smoothing: none;
+}
+
+/* ---------- loading ---------- */
+.loading {
+  position: fixed; inset: 0; z-index: 10;
+  background: #cc0538;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22vh;
+  transition: opacity .6s ease;
+}
+.loading.leaving { opacity: 0; pointer-events: none; }
+.loading-logo {
+  font-family: var(--px);
+  font-size: clamp(16px, 4vw, 52px);
+  color: #f2f2f2;
+  letter-spacing: .08em;
+  text-align: center; padding: 0 4vw;
+  text-shadow: 6px 6px 0 rgba(0,0,0,.25);
+}
+.loading-bar {
+  width: min(600px, 70vw); height: 24px;
+  border: 3px solid #1a0008; padding: 3px;
+}
+.loading-fill { height: 100%; background: #fff; transition: width .12s linear; }
+
+/* ---------- menu ---------- */
+.menu { position: fixed; inset: 0; animation: fade-in .8s ease both; }
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+
+.panorama {
+  position: absolute; inset: 0;
+  overflow: hidden;
+}
+.panorama-image {
+  position: absolute; top: 0; left: 0;
+  width: 180%; height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+  filter: saturate(1.18) contrast(1.1);
+  max-width: none;
+  opacity: 0;
+  transition: opacity 2s ease;
+  animation: photo-pan 28s ease-in-out infinite alternate;
+  will-change: transform;
+}
+.panorama-image.active { opacity: 1; }
+@keyframes photo-pan {
+  from { transform: translateX(0); }
+  to { transform: translateX(-44.4444%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .panorama-image { animation: none; transform: translateX(-22.2222%); transition: none; }
+}
+.vignette { position: absolute; inset: 0; background: radial-gradient(ellipse at center, transparent 55%, rgba(0,0,0,.45)); }
+
+.logo-wrap { position: relative; text-align: center; padding-top: 7vh; width: min(72vw, 720px); margin: 0 auto; }
+.mc-logo { display: block; font-size: 0; margin: 0 auto; width: 100%; filter: drop-shadow(0 8px 6px rgba(0,0,0,.45)); }
+.logo-svg { width: 100%; height: auto; display: block; }
+.mc-edition { width: 46%; margin: -1.2% auto 0; font-size: 0; filter: drop-shadow(0 5px 4px rgba(0,0,0,.45)); }
+.splash {
+  position: absolute; right: 3%; top: calc(7vh + 62%); color: #ffff00; font-size: clamp(22px, 3.2vw, 40px);
+  text-shadow: 3px 3px 0 #3f3f00; white-space: nowrap;
+  transform: rotate(-20deg); animation: pulse 1s ease-in-out infinite alternate;
+}
+@keyframes pulse { from { transform: rotate(-20deg) scale(1); } to { transform: rotate(-20deg) scale(1.1); } }
+
+.buttons {
+  position: absolute; left: 50%; top: 39vh; transform: translateX(-50%);
+  width: min(450px, 90vw);
+  display: flex; flex-direction: column; gap: 10px;
+}
+.row { display: flex; justify-content: space-between; gap: 10px; margin-top: 14px; }
+
+/* ---------- Minecraft button ---------- */
+.mc-btn {
+  font-family: var(--mc); font-size: 28px; color: #e0e0e0;
+  background: #6f6f6f;
+  border: 3px solid #000;
+  box-shadow: inset 3px 3px 0 #a0a0a0, inset -3px -3px 0 #3d3d3d;
+  text-shadow: 3px 3px 0 #3e3e3e;
+  height: 48px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+  image-rendering: pixelated;
+}
+.mc-btn.wide { width: 100%; }
+.mc-btn.half { flex: 1; }
+.mc-btn:hover, .mc-btn:focus-visible {
+  background: #7d86b8; color: #ffffa0; outline: 3px solid #fff; outline-offset: -3px; text-shadow: 3px 3px 0 #3f3f28;
+}
+.mc-btn:active { box-shadow: inset 3px 3px 0 #3d3d3d, inset -3px -3px 0 #a0a0a0; }
+.icon-btn { width: 48px; flex: none; }
+
+.foot {
+  position: absolute; left: 8px; right: 8px; bottom: 6px;
+  display: flex; justify-content: space-between;
+  font-size: 20px; text-shadow: 2px 2px 0 #3f3f3f;
+}
+
+/* ---------- sub screens ---------- */
+.screen {
+  position: fixed; inset: 0;
+  display: flex; flex-direction: column; align-items: center;
+  background:
+    linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.55)),
+    conic-gradient(#7a5535 25%, #6a4a2e 0 50%, #7a5535 0 75%, #5e4228 0) 0 0 / 32px 32px;
+  animation: fade-in .4s ease both;
+}
+.screen-title { font-family: var(--px); font-size: clamp(16px, 3vw, 28px); margin: 4vh 0 2vh; text-shadow: 3px 3px 0 #000; }
+.list {
+  flex: 1; width: min(760px, 92vw); overflow-y: auto;
+  background: rgba(0,0,0,.55); border: 3px solid #000; border-top-color: #222;
+  padding: 8px;
+}
+.entry {
+  display: flex; gap: 16px; padding: 12px; margin-bottom: 8px;
+  border: 3px solid transparent; color: #fff; text-decoration: none;
+}
+.entry.link:hover { border-color: #fff; background: rgba(255,255,255,.06); }
+.entry h3 { margin: 0 0 2px; font-size: 30px; font-weight: normal; color: #ffff80; }
+.entry p { margin: 8px 0 0; color: #ddd; }
+.entry ul { margin: 8px 0 0; padding-left: 24px; color: #ddd; }
+.entry li { margin-bottom: 6px; }
+.dim { color: #9a9a9a; }
+.empty-state { margin: 24px; text-align: center; color: #aaa; }
+.resume-link { width: max-content; gap: 8px; margin: 4px 12px 12px auto; padding: 0 16px; }
+.photo { width: 96px; height: 96px; flex: none; image-rendering: pixelated; object-fit: cover; border: 3px solid #000; }
+.photo.placeholder { background: #444; display: flex; align-items: center; justify-content: center; font-size: 48px; color: #888; }
+.screen-foot { width: min(450px, 90vw); padding: 14px 0 18px; }
+
+.logo-img { width: 100%; height: auto; display: block; image-rendering: pixelated; }
